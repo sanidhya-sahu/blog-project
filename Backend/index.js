@@ -3,6 +3,7 @@ const cors = require('cors')
 const path = require('path');
 
 const app = express()
+
 app.use(cors());
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -13,7 +14,7 @@ app.use(function (req, res, next) {
 })
 
 app.get(`/`,(req,res)=>{
-    res.status(200).send("Heluuuu")
+    res.status(200).send("hi")
 })
 
 app.listen(80, () => { console.log("running on http://127.0.0.1/") })
