@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
-const mongoURL = "mongodb+srv://sanidhyasahu:<password>@cluster0.8uopelz.mongodb.net/?retryWrites=true&w=majority";
+require("dotenv").config();
+
+const mongoURL = "mongodb://127.0.0.1:27017/test-db";
 
 const connectDB = async () =>{
     try {
         await mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });     
-        console.log("Connected to MongoDB");
+        console.log("db-/");
     } catch (error) {
         console.log(error);
     }

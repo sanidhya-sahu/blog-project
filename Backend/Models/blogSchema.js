@@ -2,16 +2,20 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BlogSchema = new Schema({
+    
+    email: {
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
         required: true
     },
-
-    email: {
+    data:{
         type: String,
-        required: true,
-        unique: true,
-    },
+        required:true
+    }
+    
 
 }
 );
