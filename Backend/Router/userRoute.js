@@ -42,6 +42,7 @@ router.get('/protected', isLoggedIn ,(req,res)=>{
 
 router.get('/logout',(req,res)=>{
     req.logOut(()=>{
+        req.session.destroy()
         res.send("logged out")
     })
 })
