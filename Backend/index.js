@@ -3,6 +3,7 @@ const cors = require('cors')
 const session = require("express-session");
 
 const BlogRoute = require('./Router/blogRoute')
+const UserRoute = require('./Router/userRoute')
 
 const app = express()
 
@@ -21,6 +22,6 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.use(`/blog`, BlogRoute )
+app.use(`/`, BlogRoute , UserRoute )
 
 app.listen(80, () => { console.log("running on http://127.0.0.1/") })

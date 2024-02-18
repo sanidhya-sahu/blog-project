@@ -4,13 +4,16 @@ const blog = require('../Models/blogSchema');
 const path = require('path');
 const connectDB = require('../helpers/db')
 const db = connectDB()
-const frontPath = path.join(__dirname, '../../' , 'Frontend' )
+const frontPath = path.join(__dirname, '../../' , 'Frontend' , 'Html' )
+
+
 router.get(`/list`, (req, res) => {
     blog.find({})
         .then(found => {
             if (Object.keys(found).length === 0) {
                 var resp = { status: 404 }
-                res.sendFile(frontPath+'/Html/index.html')
+                res.setHeader("status",resp.status)
+                res.sendFile(frontPath+`/index.html`)
             }
             else {
                 const foundblogs = []

@@ -1,31 +1,51 @@
-    const express = require('express');
-    const router = express();
-const passport = require('passport'); 
-require('../helpers/passport');
+const express = require('express');
+const router = express();
+const path = require('path');
+const passport = require('passport')
+const session = require('express-session');
 
-router.use(passport.initialize()); 
-router.use(passport.session());
+require('../helpers/auth')
+const frontPath = path.join(__dirname, '../../' , 'Frontend', 'Html' )
 
-const userController = require('../controllers/userController');
+function isLoggedIn(req,res,next) {
+    req.user ? next() : res.sendStatus(401)
+}
 
-router.get('/', userController.loadAuth);
+router.use(session({secret:'KEY'}))
+router.use(passport.initialize())
+router.use(passport.session())
 
-// Auth 
-router.get('/auth/google' , passport.authenticate('google', { scope: 
-	[ 'email', 'profile' ] 
-})); 
 
-// Auth Callback 
-router.get( '/auth/google/callback', 
-	passport.authenticate( 'google', { 
-		successRedirect: '/success', 
-		failureRedirect: '/failure'
-}));
+router.get(`/`,(req,res)=>{
+    res.sendFile(frontPath+'/login.html')
+})
+router.get(`/auth/google`,
+    passport.authenticate('google',{
+        scope:['email','profile']
+    })
+)
+router.get(`/google/callback`,
+    passport.authenticate('google',{
+        successRedirect:'/protected',
+        failureRedirect:'/auth/failure'
+    })
+)
+router.get('/auth/failure',(req,res)=>{
+    res.send("fail")
+})
 
-// Success 
-router.get('/success' , userController.successGoogleLogin); 
+router.get('/protected', isLoggedIn ,(req,res)=>{
+    // update logged in here
+    // console.log(req.user.displayName);
+    res.redirect('/list')
+})
 
-// failure 
-router.get('/failure' , userController.failureGoogleLogin);
+router.get('/logout',(req,res)=>{
+    req.logOut(()=>{
+        res.send("logged out")
+    })
+})
 
-module.exports = router;
+
+
+module.exports = router
